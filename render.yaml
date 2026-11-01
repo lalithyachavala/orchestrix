@@ -33,5 +33,8 @@ services:
     dockerContext: ./apps/web
     plan: free
     envVars:
+      # NOTE: onrender.com subdomains are GLOBALLY unique. "orchestrix-api" was
+      # taken, so Render assigned "-oh2m". Point the web bundle at the api's
+      # ACTUAL URL (check the api service page and update here if it differs).
       - key: NEXT_PUBLIC_API_BASE
-        value: https://orchestrix-api.onrender.com   # baked into the client at build
+        value: https://orchestrix-api-oh2m.onrender.com   # baked into the client at build
