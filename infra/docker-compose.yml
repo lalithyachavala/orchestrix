@@ -1,0 +1,17 @@
+# Production-shaped local target. Keyless by default (mock adapter).
+services:
+  api:
+    build: { context: ../apps/api }
+    ports: ["8000:8000"]
+    environment:
+      ADAPTER: mock
+      WEB_ORIGIN: http://localhost:3000
+    # To enable a real LLM later: set ADAPTER + the matching *_API_KEY here.
+
+  web:
+    build:
+      context: ../apps/web
+      args:
+        NEXT_PUBLIC_API_BASE: http://localhost:8000   # baked into client at build
+    ports: ["3000:3000"]
+    depends_on: [api]

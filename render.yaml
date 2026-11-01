@@ -1,0 +1,37 @@
+# Render Blueprint — deploys the Orchestrix public demo (api + web).
+# Render passes a service env var as a Docker build arg when the Dockerfile
+# declares a matching ARG (used here to bake NEXT_PUBLIC_API_BASE into the web
+# bundle at build time).
+#
+# IMPORTANT: the two service names below are wired into each other's URLs.
+# If you rename a service, update the matching URL in the other's envVars.
+services:
+  - type: web
+    name: orchestrix-api
+    runtime: docker
+    dockerfilePath: ./apps/api/Dockerfile
+    dockerContext: ./apps/api
+    plan: free                       # free = ephemeral disk; data reseeds on restart
+    healthCheckPath: /health
+    envVars:
+      - key: ADAPTER
+        value: mock                  # keyless default; no API key required
+      - key: WEB_ORIGIN
+        value: https://orchestrix-web.onrender.com   # CORS allow-list
+    # Persistent SQLite (requires a paid instance — disks aren't on free):
+    #   1. uncomment the disk block below
+    #   2. add an env var  ORCHESTRIX_DB = /data/orchestrix.db
+    # disk:
+    #   name: data
+    #   mountPath: /data
+    #   sizeGB: 1
+
+  - type: web
+    name: orchestrix-web
+    runtime: docker
+    dockerfilePath: ./apps/web/Dockerfile
+    dockerContext: ./apps/web
+    plan: free
+    envVars:
+      - key: NEXT_PUBLIC_API_BASE
+        value: https://orchestrix-api.onrender.com   # baked into the client at build
