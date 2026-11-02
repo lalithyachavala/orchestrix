@@ -1,5 +1,8 @@
 # Orchestrix — AI Agent & Workflow Orchestration
 
+**🌐 Live demo: https://orchestrix-web.onrender.com**
+<br>_(Free tier — first load after idle can take ~50s to wake. Open, synthetic data, resets on restart.)_
+
 > **Independent illustrative engineering demonstration.** Orchestrix is an
 > original portfolio artifact built to demonstrate engineering capability.
 > It is not affiliated with, and does not represent, any real company,
